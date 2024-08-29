@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Todo Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Display the received todo details -->
+  <div *ngIf="receivedTodo">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ receivedTodo.Title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ receivedTodo.Description }}</p>
+        <p><ion-icon name="time-outline"></ion-icon> {{ receivedTodo.Clock_in | date: 'shortTime' }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" (click)="resetView()">Back to List</ion-button>
+    <ion-button expand="block" color="danger" (click)="deleteItem(receivedTodo.id)">Delete</ion-button>
+    <ion-button fill="clear" (click)="markComplete()">
+      <span *ngIf="!receivedTodo?.done; else elseTemplate">Mark as complete</span>
+      <ng-template #elseTemplate>
+        <span>Unmark completion</span>
+      </ng-template>
+    </ion-button>
+  </div>
+
+  <!-- Display the list of todos if no todo is selected -->
+  <ion-list *ngIf="!receivedTodo">
+    <ion-item *ngFor="let todo of todos" button (click)="viewTodoDetails(todo)">
+      <ion-label>
+        <h2>{{ todo.Title }}</h2>
+        <p>{{ todo.Description }}</p>
+        <p><ion-icon name="time-outline"></ion-icon> {{ todo.Clock_in | date: 'shortTime' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button class="custom-plus-button" (click)="navigateToHomePage()">
+    <ion-icon name="add" slot="icon-only"></ion-icon>
+  </ion-button>
+
+</ion-content>
